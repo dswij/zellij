@@ -3518,6 +3518,19 @@ impl Tab {
             active_terminal.update_name(s);
         }
     }
+
+    pub fn show_pane_number(&mut self, client_id: ClientId) {
+        // FIXME: WIP: show pane number based on rows/position
+        let panes = self
+            .panes
+            .iter_mut()
+            .filter(|(_, p)| p.selectable())
+            .map(|(_, panes)| panes)
+            .enumerate();
+        for (idx, panes) in panes {
+            panes.update_name(&format!("Pane #{}", idx));
+        }
+    }
 }
 
 #[allow(clippy::borrowed_box)]

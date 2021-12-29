@@ -815,7 +815,7 @@ pub(crate) fn screen_thread_main(
                 screen
                     .get_active_tab_mut(client_id)
                     .unwrap()
-                    .focus_next_pane(client_id);
+                    .show_pane_number(client_id); // FIXME
 
                 screen.render();
             }
@@ -1240,7 +1240,14 @@ pub(crate) fn screen_thread_main(
                     .senders
                     .send_to_server(ServerInstruction::UnblockInputThread)
                     .unwrap();
-            }
+            } // ScreenInstruction::Test(_client_id) => {
+              //     // FIXME: TEST
+              //     screen
+              //         .get_active_tab_mut(client_id)
+              //         .unwrap()
+              //         .show_pane_number(client_id);
+              //     screen.render();
+              // }
         }
     }
 }
