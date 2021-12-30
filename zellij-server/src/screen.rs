@@ -1048,8 +1048,7 @@ pub(crate) fn screen_thread_main(
                 screen
                     .get_active_tab_mut(client_id)
                     .unwrap()
-                    .toggle_active_pane_fullscreen(client_id);
-                screen.update_tabs();
+                    .show_pane_number(client_id); // FIXME
 
                 screen.render();
             }

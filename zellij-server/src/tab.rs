@@ -3521,14 +3521,25 @@ impl Tab {
 
     pub fn show_pane_number(&mut self, client_id: ClientId) {
         // FIXME: WIP: show pane number based on rows/position
-        let panes = self
-            .panes
-            .iter_mut()
-            .filter(|(_, p)| p.selectable())
-            .map(|(_, panes)| panes)
-            .enumerate();
-        for (idx, panes) in panes {
-            panes.update_name(&format!("Pane #{}", idx));
+       let mut panes: Vec<&mut Box<dyn Pane>> = self
+           .panes
+           .iter_mut()
+           .filter(|(_, p)| p.selectable())
+           .map(|(_, panes)| panes)
+           .collect();
+        // let mut panes: Vec<(&PaneId, &Box<dyn Pane>)> = self.get_selectable_panes().collect();
+        panes.sort_by(|a_pane, b_pane| {
+            if a_pane.y() == b_pane.y() {
+                a_pane.x().cmp(&b_pane.x())
+            } else {
+                a_pane.y().cmp(&b_pane.y())
+            }
+        });
+
+        let panes_enum = panes.iter_mut().enumerate();
+
+        for (idx, pane) in panes_enum {
+            (**pane).update_name(&format!("Pane #{}", idx));
         }
     }
 }
